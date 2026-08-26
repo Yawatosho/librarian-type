@@ -20,16 +20,13 @@ YAWATOSHO GAMESのミニゲームです。
 
 ## ローカルで確認する
 
-Node.js 22以上で次を実行します。
+Node.js 22以上でGitHub Pages用ファイルを生成します。
 
-    npm install
-    npm run dev
+    SITE_URL=https://example.github.io/repository-name node --experimental-strip-types scripts/build-github-pages.mjs
 
-GitHub Pagesへ送る静的ファイルだけを確認する場合：
+出力先は github-pages/ です。ローカル表示は次のように確認できます。
 
-    SITE_URL=https://example.github.io/repository-name npm run build:pages
-
-出力先は github-pages/ です。
+    python3 -m http.server 8000 --directory github-pages
 
 ## データと画像の差し替え
 

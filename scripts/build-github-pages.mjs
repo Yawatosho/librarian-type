@@ -54,7 +54,7 @@ mkdirSync(outputDir, { recursive: true });
 cpSync(resolve(projectRoot, "public"), outputDir, { recursive: true });
 mkdirSync(resolve(outputDir, "assets"), { recursive: true });
 
-const css = readFileSync(resolve(projectRoot, "app/globals.css"), "utf8").replace('@import "tailwindcss";', "");
+const css = readFileSync(resolve(projectRoot, "app/globals.css"), "utf8");
 writeFileSync(resolve(outputDir, "assets/styles.css"), css);
 cpSync(resolve(projectRoot, "static/quiz.js"), resolve(outputDir, "assets/quiz.js"));
 cpSync(resolve(projectRoot, "static/result.js"), resolve(outputDir, "assets/result.js"));
