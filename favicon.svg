@@ -1,6 +1,13 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M22 19.2727C22 20.779 20.779 22 19.2727 22H14.7273C13.221 22 12 20.779 12 19.2727V12H19.2727C20.779 12 22 13.221 22 14.7273V19.2727Z" fill="#68C4FF"/>
-<path d="M20 2C21.1046 2 22 2.89543 22 4V7C22 8.10457 21.1046 9 20 9H17C15.8954 9 15 8.10457 15 7V4C15 2.89543 15.8954 2 17 2H20Z" fill="#0C79D8"/>
-<path d="M7 15C8.10457 15 9 15.8954 9 17V20C9 21.1046 8.10457 22 7 22H4C2.89543 22 2 21.1046 2 20V17C2 15.8954 2.89543 15 4 15H7Z" fill="#0C79D8"/>
-<path d="M12 12H4.72727C3.22104 12 2 10.779 2 9.27273V4.72727C2 3.22104 3.22104 2 4.72727 2H9.27273C10.779 2 12 3.22104 12 4.72727V12Z" fill="#2E9EFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="4冊の本が並ぶ図書館員タイプ診断のアイコン">
+  <rect width="512" height="512" fill="#f1e6cf"/>
+  <path d="M40 40H420L472 92V472H92L40 420Z" fill="#f1e6cf" stroke="#1d1b17" stroke-width="16"/>
+  <path d="M56 56H126" stroke="#76aa2f" stroke-width="12"/>
+  <path d="M386 456H456" stroke="#35aaa1" stroke-width="12"/>
+  <rect x="88" y="226" width="68" height="142" fill="#ed5140"/>
+  <rect x="176" y="166" width="68" height="202" fill="#f0ad22"/>
+  <rect x="264" y="202" width="68" height="166" fill="#76aa2f"/>
+  <rect x="352" y="126" width="68" height="242" fill="#35aaa1"/>
+  <path d="M104 252H140M192 192H228M280 228H316M368 152H404" stroke="#fffaf0" stroke-width="10"/>
+  <path d="M72 368H440" stroke="#1d1b17" stroke-width="22"/>
+  <path d="M96 402H416" stroke="#ed5140" stroke-width="12"/>
 </svg>

@@ -30,6 +30,12 @@ function resultBody(result) {
       '<figure class="result-illustration"><img src="' + escapeHtml(displayImage) + '" alt="' + escapeHtml(result.name) + 'のタイプ画像" decoding="async" fetchpriority="high"></figure>' +
       '<p class="catch-copy">' + escapeHtml(result.catchCopy) + '</p>' +
       '<p class="result-description">' + escapeHtml(result.description) + '</p></section>' +
+    '<section class="diagnosis-cta" aria-labelledby="diagnosis-cta-title">' +
+      '<div class="diagnosis-cta-copy"><p class="diagnosis-cta-label">TYPE CHECK / YOUR TURN</p>' +
+        '<h2 id="diagnosis-cta-title">あなたなら、どの図書館員タイプ？</h2>' +
+        '<p class="diagnosis-cta-description">12の二択質問で、16タイプのどれかに勝手に分類します。</p></div>' +
+      '<a class="diagnosis-cta-button" href="../../">診断してみる <span aria-hidden="true">→</span></a>' +
+    '</section>' +
     '<section class="likes-section" aria-labelledby="likes-title"><h2 id="likes-title">こんなこと、ちょっと好きかも</h2><ul>' + likes + '</ul></section>' +
       '<p class="disclaimer">※もちろん、だいたいです。</p>' +
     '<section class="share-section" aria-labelledby="share-title"><h2 id="share-title">このタイプ、だれかに教える？</h2>' +
@@ -47,12 +53,17 @@ function resultBody(result) {
     '</article></main>';
 }
 
-for (const generatedPath of ["assets", "result", "index.html", "favicon.svg", ".nojekyll", "robots.txt", "sitemap.xml"]) {
+for (const generatedPath of ["assets", "result", "index.html", "favicon.svg", "favicon-32x32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "manifest.webmanifest", ".nojekyll", "robots.txt", "sitemap.xml"]) {
   rmSync(resolve(outputDir, generatedPath), { recursive: true, force: true });
 }
 mkdirSync(resolve(outputDir, "assets"), { recursive: true });
 cpSync(resolve(projectRoot, "public/assets"), resolve(outputDir, "assets"), { recursive: true });
 cpSync(resolve(projectRoot, "public/favicon.svg"), resolve(outputDir, "favicon.svg"));
+cpSync(resolve(projectRoot, "public/favicon-32x32.png"), resolve(outputDir, "favicon-32x32.png"));
+cpSync(resolve(projectRoot, "public/apple-touch-icon.png"), resolve(outputDir, "apple-touch-icon.png"));
+cpSync(resolve(projectRoot, "public/icon-192.png"), resolve(outputDir, "icon-192.png"));
+cpSync(resolve(projectRoot, "public/icon-512.png"), resolve(outputDir, "icon-512.png"));
+cpSync(resolve(projectRoot, "public/manifest.webmanifest"), resolve(outputDir, "manifest.webmanifest"));
 
 const css = readFileSync(resolve(projectRoot, "app/globals.css"), "utf8");
 writeFileSync(resolve(outputDir, "assets/styles.css"), css);
