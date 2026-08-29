@@ -69,8 +69,6 @@ h1 { margin:0; }
 .start-button:focus-visible { outline:2px solid var(--hud-focus); outline-offset:5px; }
 .duration { position:absolute; left:0; bottom:16px; margin:0; color:var(--hud-muted); font:700 .64rem/1 var(--font-ui); letter-spacing:.16em; }
 .duration::before { content:"PLAY INFO / "; color:var(--hud-hot); }
-.control-guide { position:absolute; right:0; bottom:16px; margin:0; color:var(--hud-muted); font:700 .58rem/1 var(--font-ui); letter-spacing:.16em; text-transform:uppercase; }
-.control-guide kbd { margin-right:8px; padding:4px 7px; color:var(--hud-text); background:transparent; border:1px solid var(--hud-line); border-radius:0; font:inherit; }
 
 /* Question screen */
 .quiz-shell { padding:clamp(18px,3vw,42px); }
@@ -146,17 +144,18 @@ h1 { margin:0; }
 .share-section { position:relative; width:min(100%,1120px); margin:0 auto; padding:clamp(50px,7vw,82px) clamp(20px,6vw,84px); background:linear-gradient(115deg,rgba(118,170,47,.15),rgba(255,251,241,.8) 46%,rgba(237,81,64,.1)); border-block:2px solid var(--hud-border); clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px); }
 .share-section::before { content:"SHARE YOUR TYPE"; position:absolute; top:17px; left:24px; color:var(--hud-accent); font:800 .52rem/1 var(--font-ui); letter-spacing:.18em; }
 .share-section h2 { margin:0 0 28px; font-size:clamp(1.25rem,3vw,2.1rem); }
-.share-buttons { display:grid; grid-template-columns:1.5fr .8fr .8fr; gap:8px; }
+.share-buttons { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .share-buttons button,.share-buttons a { position:relative; min-height:56px; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:12px 16px; color:var(--hud-text); background:rgba(255,251,241,.66); border:1px solid var(--hud-line); border-radius:0; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%); font-size:.82rem; font-weight:800; letter-spacing:.05em; text-decoration:none; cursor:pointer; transition:color var(--hud-duration-fast) ease-out,border-color var(--hud-duration-fast) ease-out,transform var(--hud-duration-fast) ease-out; }
 .share-buttons button::before,.share-buttons a::before { content:""; position:absolute; inset:0; z-index:-1; background:var(--hud-accent); transform:translateX(-102%); transition:transform var(--hud-duration-fast) ease-out; }
 .share-buttons button:hover,.share-buttons a:hover { color:var(--hud-on-accent); border-color:var(--hud-accent); transform:translateY(-1px); }
 .share-buttons button:hover::before,.share-buttons a:hover::before { transform:translateX(0); }
 .share-buttons button:active,.share-buttons a:active { transform:translateY(2px); }
-.share-buttons .share-main { color:var(--hud-on-accent); background:var(--hud-accent); border:2px solid var(--hud-text); font-size:.94rem; }
-.share-buttons .share-main::before { background:var(--hud-hot); }
 .share-buttons button:focus-visible,.share-buttons a:focus-visible,.replay-button:focus-visible,.game-play:focus-visible { outline:2px solid var(--hud-focus); outline-offset:4px; }
-.replay-button { width:max-content; display:block; margin:34px auto 78px; padding:12px 4px; color:var(--hud-muted); font-size:.78rem; font-weight:750; letter-spacing:.08em; text-decoration:none; border-bottom:1px solid var(--hud-line); transition:color var(--hud-duration-fast) ease-out,border-color var(--hud-duration-fast) ease-out; }
-.replay-button:hover { color:var(--hud-text); border-color:var(--hud-hot); }
+.replay-button { width:min(100%,320px); min-height:58px; display:flex; align-items:center; justify-content:center; gap:12px; margin:38px auto 82px; padding:14px 22px; color:var(--hud-on-accent); background:var(--hud-text); border:2px solid var(--hud-text); clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); box-shadow:4px 4px 0 var(--hud-accent); font-size:.9rem; font-weight:850; letter-spacing:.08em; text-decoration:none; transition:color var(--hud-duration-fast) ease-out,background var(--hud-duration-fast) ease-out,transform var(--hud-duration-fast) ease-out,box-shadow var(--hud-duration-fast) ease-out; }
+.replay-button span { color:var(--hud-gold); font-size:1.05rem; transition:transform var(--hud-duration-fast) ease-out; }
+.replay-button:hover { color:var(--hud-on-accent); background:var(--hud-hot); transform:translateX(-2px); box-shadow:6px 4px 0 var(--hud-accent); }
+.replay-button:hover span { transform:translateX(-3px); }
+.replay-button:active { transform:translate(2px,2px); box-shadow:2px 2px 0 var(--hud-accent); }
 .games-section { position:relative; width:min(100%,1120px); margin:0 auto; padding:76px clamp(0px,4vw,42px) 52px; border-top:3px solid var(--hud-text); }
 .games-section::before { content:""; position:absolute; top:-3px; right:0; width:min(32%,260px); height:9px; background:linear-gradient(90deg,var(--hud-hot) 0 25%,var(--hud-gold) 25% 50%,var(--hud-accent) 50% 75%,var(--hud-teal) 75%); }
 .games-eyebrow { margin:0 0 12px; color:var(--hud-accent); font:800 .58rem/1 var(--font-ui); letter-spacing:.22em; }
@@ -185,12 +184,15 @@ h1 { margin:0; }
 @keyframes line-draw { to { transform:scaleX(1); } }
 @keyframes art-in { from { opacity:0; clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%); } to { opacity:1; clip-path:polygon(0 14px,14px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%); } }
 
+@media (min-width:761px) {
+  .question-content h1 { max-width:none; white-space:pre; }
+}
 @media (max-width:760px) {
   .site-shell { padding:12px; }
   .site-shell::before,.site-shell::after { inset:9px; }
   .title-card { min-height:calc(100svh - 24px); padding:84px 14px 82px; }
   .title-card::before { width:88vw; height:88vw; top:44%; }
-  .title-card::after,.screen-index span,.control-guide { display:none; }
+  .title-card::after,.screen-index span { display:none; }
   .brand-row { inset:12px auto auto 8px; }
   .screen-index { inset:12px 8px auto auto; }
   .screen-index strong { font-size:.68rem; }
@@ -235,7 +237,6 @@ h1 { margin:0; }
   .disclaimer { margin-bottom:54px; }
   .share-section { padding:54px 14px 30px; }
   .share-buttons { grid-template-columns:1fr 1fr; }
-  .share-buttons .share-main { grid-column:1/-1; }
   .replay-button { margin-bottom:58px; }
   .games-section { padding:50px 0 28px; }
   .games-section::before { width:46%; }

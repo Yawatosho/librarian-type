@@ -1,10 +1,9 @@
 (function () {
   "use strict";
 
-  var shareButton = document.getElementById("share-button");
   var copyButton = document.getElementById("copy-button");
   var xLink = document.getElementById("x-share");
-  if (!shareButton || !copyButton || !xLink) return;
+  if (!copyButton || !xLink) return;
 
   var name = document.body.getAttribute("data-result-name");
   var catchCopy = document.body.getAttribute("data-catch-copy");
@@ -23,12 +22,5 @@
     window.prompt("このURLをコピーしてください", shareUrl);
   }
 
-  shareButton.addEventListener("click", function () {
-    if (navigator.share) {
-      navigator.share({ title: "あなたはどの図書館員タイプ？", text: shareText, url: shareUrl }).catch(function () {});
-    } else {
-      copyUrl();
-    }
-  });
   copyButton.addEventListener("click", copyUrl);
 }());

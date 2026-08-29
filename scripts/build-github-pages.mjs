@@ -33,10 +33,9 @@ function resultBody(result) {
     '<section class="likes-section" aria-labelledby="likes-title"><h2 id="likes-title">こんなこと、ちょっと好きかも</h2><ul>' + likes + '</ul></section>' +
       '<p class="disclaimer">※もちろん、だいたいです。</p>' +
     '<section class="share-section" aria-labelledby="share-title"><h2 id="share-title">このタイプ、だれかに教える？</h2>' +
-      '<div class="share-buttons"><button id="share-button" type="button" class="share-main">結果をシェア <span aria-hidden="true">↗</span></button>' +
-      '<a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
+      '<div class="share-buttons"><a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
       '<button id="copy-button" type="button" class="copy-button" aria-live="polite">URLをコピー</button></div></section>' +
-    '<a class="replay-button" href="../../">← もう一度やる</a>' +
+    '<a class="replay-button" href="../../"><span aria-hidden="true">←</span> もう一度診断する</a>' +
     '<section class="games-section" aria-labelledby="games-title"><p class="games-eyebrow">YAWATOSHO GAMES / PICK 01</p>' +
       '<h2 id="games-title">あなたにおすすめのYAWATOSHO GAME</h2>' +
       '<div class="game-feature"><div class="game-identity"><p class="game-number">GAME / 01</p>' +
