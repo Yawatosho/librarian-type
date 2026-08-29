@@ -8,7 +8,7 @@
 
   var name = document.body.getAttribute("data-result-name");
   var catchCopy = document.body.getAttribute("data-catch-copy");
-  var shareText = "私は「" + name + "」でした。\n\n" + catchCopy + "\n\nあなたはどの図書館員タイプ？\n#図書館員タイプ";
+  var shareText = "図書館員タイプ、私は\n「" + name + "」でした。\n\n" + catchCopy + "\n\nあなたはどの図書館員タイプ？\n#図書館員タイプ";
   var shareUrl = window.location.href;
   xLink.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
 

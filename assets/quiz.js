@@ -8,9 +8,51 @@
   var scores = {};
   var answerOrder = [];
   var values = ["P", "C", "Q", "O", "R", "D", "X", "S"];
+  var statsEndpoint = "https://script.google.com/macros/s/AKfycbz56R7dBvP52TUQk4vsB3bm8V_O12dcTzZ2CNnRDM_C4s-zg6gz9ThwNv8fy8zlYmW8/exec";
+  var resultCountedKey = "librarian-type-result-counted";
+  var resultCounted = false;
 
   function resetScores() {
     values.forEach(function (value) { scores[value] = 0; });
+  }
+
+  function resetResultCount() {
+    resultCounted = false;
+    try {
+      window.sessionStorage.removeItem(resultCountedKey);
+    } catch (error) {}
+  }
+
+  function recordDiagnosisResult(type) {
+    var validType = Object.keys(game.resultSlugs).some(function (code) {
+      return game.resultSlugs[code] === type;
+    });
+    if (!validType || resultCounted) return;
+
+    try {
+      if (window.sessionStorage.getItem(resultCountedKey)) {
+        resultCounted = true;
+        return;
+      }
+    } catch (error) {}
+
+    resultCounted = true;
+    try {
+      window.sessionStorage.setItem(resultCountedKey, "1");
+    } catch (error) {}
+
+    if (typeof window.fetch !== "function") return;
+    try {
+      var request = window.fetch(statsEndpoint, {
+        method: "POST",
+        mode: "no-cors",
+        credentials: "omit",
+        referrerPolicy: "no-referrer",
+        keepalive: true,
+        body: JSON.stringify({ type: type })
+      });
+      if (request && typeof request.catch === "function") request.catch(function () {});
+    } catch (error) {}
   }
 
   function escapeHtml(value) {
@@ -79,7 +121,7 @@
     });
 
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var confirmDuration = reduceMotion ? 10 : 100;
+    var confirmDuration = reduceMotion ? 10 : 120;
     var exitDuration = reduceMotion ? 10 : 90;
     window.setTimeout(function () {
       var currentCard = app.querySelector(".question-card");
@@ -97,7 +139,9 @@
           (scores.Q > scores.O ? "Q" : "O") +
           (scores.R > scores.D ? "R" : "D") +
           (scores.X > scores.S ? "X" : "S");
-        reveal(game.resultSlugs[code]);
+        var slug = game.resultSlugs[code];
+        recordDiagnosisResult(slug);
+        reveal(slug);
       }, exitDuration);
     }, confirmDuration);
   }
@@ -115,6 +159,7 @@
   document.getElementById("start-button").addEventListener("click", function () {
     index = 0;
     selected = false;
+    resetResultCount();
     resetScores();
     renderQuestion();
   });
