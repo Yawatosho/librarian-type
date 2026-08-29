@@ -40,6 +40,7 @@
           '</div>' +
         '</div>' +
         '<p class="quiz-note">悩んだら、なんとなくで。</p>' +
+        '<p class="quiz-control" aria-hidden="true">A / B から選択</p>' +
       '</section>';
 
     document.getElementById("question-heading").focus();

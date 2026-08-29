@@ -16,6 +16,7 @@ function escapeHtml(value) {
 
 function resultBody(result) {
   const games = result.recommendedGames.map(function (id) { return recommendedGames[id]; });
+  const displayImage = "../../" + result.ogImage.replace(/^\/+/, "");
   const likes = result.likes.map(function (like, index) {
     return '<li><span aria-hidden="true">' + String(index + 1).padStart(2, "0") + '</span>' + escapeHtml(like) + '</li>';
   }).join("");
@@ -29,15 +30,12 @@ function resultBody(result) {
     '<header class="result-header"><a class="mini-brand" href="../../">LIBRARIAN TYPE</a><span>YAWATOSHO GAMES</span></header>' +
     '<section class="result-hero" aria-labelledby="result-name">' +
       '<p class="result-kicker">あなたの図書館員タイプは……</p>' +
-      '<h1 id="result-name">' + escapeHtml(result.name) + '</h1>' +
-      '<div class="result-illustration" role="img" aria-label="' + escapeHtml(result.name) + 'のイラスト用プレースホルダー" data-illustration="' + escapeHtml(result.illustration) + '">' +
-        '<span class="illustration-desk" aria-hidden="true"></span><span class="illustration-book one" aria-hidden="true"></span>' +
-        '<span class="illustration-book two" aria-hidden="true"></span><span class="illustration-book three" aria-hidden="true"></span>' +
-        '<span class="illustration-note" aria-hidden="true">LIBRARY<br>WORK<br>STYLE</span></div>' +
+      '<h1 id="result-name" class="visually-hidden">' + escapeHtml(result.name) + '</h1>' +
+      '<figure class="result-illustration"><img src="' + escapeHtml(displayImage) + '" alt="' + escapeHtml(result.name) + 'のタイプ画像" decoding="async" fetchpriority="high"></figure>' +
       '<p class="catch-copy">' + escapeHtml(result.catchCopy) + '</p>' +
       '<p class="result-description">' + escapeHtml(result.description) + '</p></section>' +
     '<section class="likes-section" aria-labelledby="likes-title"><h2 id="likes-title">こんなこと、ちょっと好きかも</h2><ul>' + likes + '</ul></section>' +
-    '<p class="disclaimer">※もちろん、だいたいです。<br><small>図書館員あるあるを使った遊びです。</small></p>' +
+      '<p class="disclaimer">※もちろん、だいたいです。</p>' +
     '<section class="share-section" aria-labelledby="share-title"><h2 id="share-title">このタイプ、だれかに教える？</h2>' +
       '<div class="share-buttons"><button id="share-button" type="button" class="share-main">結果をシェア <span aria-hidden="true">↗</span></button>' +
       '<a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +

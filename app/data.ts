@@ -43,7 +43,7 @@ export const recommendedGames = {
 const result = (internalCode: string, slug: string, name: string, catchCopy: string, description: string, likes: [string, string, string], recommended: [string, string]): Result => ({
   internalCode, slug, name, catchCopy, description, likes, recommendedGames: recommended,
   illustration: `/assets/result-illustrations/${slug}.png`,
-  ogImage: `/assets/result-ogp/${slug}.png`,
+  ogImage: `/assets/result-ogp/${slug}.webp`,
 });
 
 export const results: Result[] = [
