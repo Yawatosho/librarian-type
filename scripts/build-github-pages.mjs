@@ -1,10 +1,10 @@
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { questions, recommendedGames, results } from "../app/data.ts";
+import { games, questions, results } from "../app/data.ts";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const outputDir = resolve(projectRoot, "github-pages");
+const outputDir = projectRoot;
 const siteUrl = (process.env.SITE_URL || "https://example.com").replace(/\/$/, "");
 const template = readFileSync(resolve(projectRoot, "static/result-template.html"), "utf8");
 
@@ -15,16 +15,12 @@ function escapeHtml(value) {
 }
 
 function resultBody(result) {
-  const games = result.recommendedGames.map(function (id) { return recommendedGames[id]; });
+  const game = games[result.recommendedGame.gameId];
   const displayImage = "../../" + result.ogImage.replace(/^\/+/, "");
   const likes = result.likes.map(function (like, index) {
     return '<li><span aria-hidden="true">' + String(index + 1).padStart(2, "0") + '</span>' + escapeHtml(like) + '</li>';
   }).join("");
-  const gameCards = games.map(function (game, index) {
-    return '<a href="' + escapeHtml(game.href) + '" class="game-card" aria-label="' + escapeHtml(game.title) + '（仮リンク）">' +
-      '<span class="game-number">0' + (index + 1) + '</span><span><strong>' + escapeHtml(game.title) + '</strong>' +
-      '<small>' + escapeHtml(game.note) + '</small></span><i aria-hidden="true">→</i></a>';
-  }).join("");
+  const gameSubtitle = game.subtitle ? '<p class="game-subtitle">' + escapeHtml(game.subtitle) + '</p>' : "";
 
   return '<main class="result-shell"><article class="result-card">' +
     '<header class="result-header"><a class="mini-brand" href="../../">LIBRARIAN TYPE</a><span>YAWATOSHO GAMES</span></header>' +
@@ -41,16 +37,23 @@ function resultBody(result) {
       '<a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
       '<button id="copy-button" type="button" class="copy-button" aria-live="polite">URLをコピー</button></div></section>' +
     '<a class="replay-button" href="../../">← もう一度やる</a>' +
-    '<section class="games-section" aria-labelledby="games-title"><p class="games-eyebrow">YAWATOSHO GAMES</p>' +
-      '<h2 id="games-title">このタイプなら、こんなゲームも。</h2><div class="game-list">' + gameCards + '</div>' +
-      '<p class="games-note">※おすすめゲームはMVP用の仮データです。</p></section>' +
+    '<section class="games-section" aria-labelledby="games-title"><p class="games-eyebrow">YAWATOSHO GAMES / PICK 01</p>' +
+      '<h2 id="games-title">あなたにおすすめのYAWATOSHO GAME</h2>' +
+      '<div class="game-feature"><div class="game-identity"><p class="game-number">GAME / 01</p>' +
+        '<h3>' + escapeHtml(game.title) + '</h3>' + gameSubtitle + '</div>' +
+        '<div class="game-reason"><p class="game-description">' + escapeHtml(game.description) + '</p>' +
+          '<p class="game-comment">' + escapeHtml(result.recommendedGame.comment) + '</p>' +
+          '<a class="game-play" href="' + escapeHtml(game.href) + '" target="_blank" rel="noopener noreferrer" aria-label="' + escapeHtml(game.title) + 'を別タブで開く">このゲームで遊ぶ <span aria-hidden="true">→</span></a>' +
+        '</div></div></section>' +
     '</article></main>';
 }
 
-rmSync(outputDir, { recursive: true, force: true });
-mkdirSync(outputDir, { recursive: true });
-cpSync(resolve(projectRoot, "public"), outputDir, { recursive: true });
+for (const generatedPath of ["assets", "result", "index.html", "favicon.svg", ".nojekyll", "robots.txt", "sitemap.xml"]) {
+  rmSync(resolve(outputDir, generatedPath), { recursive: true, force: true });
+}
 mkdirSync(resolve(outputDir, "assets"), { recursive: true });
+cpSync(resolve(projectRoot, "public/assets"), resolve(outputDir, "assets"), { recursive: true });
+cpSync(resolve(projectRoot, "public/favicon.svg"), resolve(outputDir, "favicon.svg"));
 
 const css = readFileSync(resolve(projectRoot, "app/globals.css"), "utf8");
 writeFileSync(resolve(outputDir, "assets/styles.css"), css);
@@ -91,5 +94,5 @@ writeFileSync(
   "\n</urlset>\n"
 );
 
-console.log("GitHub Pages output: " + outputDir);
+console.log("GitHub Pages root: " + outputDir);
 console.log("Questions: " + questions.length + " / Result pages: " + results.length);

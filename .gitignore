@@ -1,6 +1,3 @@
-# Generated GitHub Pages artifact
-/github-pages/
-
 # Local dependencies and environment
 /node_modules/
 .env*
