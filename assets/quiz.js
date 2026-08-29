@@ -156,6 +156,43 @@
     }, delay);
   }
 
+  var privacyDialog = document.getElementById("privacy-dialog");
+  var privacyOpen = document.getElementById("privacy-open");
+  var privacyClose = document.getElementById("privacy-close");
+  if (privacyDialog && privacyOpen && privacyClose) {
+    privacyOpen.addEventListener("click", function () {
+      if (typeof privacyDialog.showModal === "function") {
+        privacyDialog.showModal();
+        return;
+      }
+      privacyDialog.setAttribute("open", "");
+    });
+    privacyClose.addEventListener("click", function () {
+      if (typeof privacyDialog.close === "function") {
+        privacyDialog.close();
+        return;
+      }
+      privacyDialog.removeAttribute("open");
+      privacyOpen.focus();
+    });
+    privacyDialog.addEventListener("click", function (event) {
+      if (event.target === privacyDialog && typeof privacyDialog.close === "function") privacyDialog.close();
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || !privacyDialog.hasAttribute("open")) return;
+      event.preventDefault();
+      if (typeof privacyDialog.close === "function") {
+        privacyDialog.close();
+        return;
+      }
+      privacyDialog.removeAttribute("open");
+      privacyOpen.focus();
+    });
+    privacyDialog.addEventListener("close", function () {
+      privacyOpen.focus();
+    });
+  }
+
   document.getElementById("start-button").addEventListener("click", function () {
     index = 0;
     selected = false;

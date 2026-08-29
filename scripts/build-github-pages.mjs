@@ -31,7 +31,6 @@ function resultBody(result) {
       '<p class="catch-copy">' + escapeHtml(result.catchCopy) + '</p>' +
       '<p class="result-description">' + escapeHtml(result.description) + '</p></section>' +
     '<section class="likes-section" aria-labelledby="likes-title"><h2 id="likes-title">こんなこと、ちょっと好きかも</h2><ul>' + likes + '</ul></section>' +
-      '<p class="disclaimer">※もちろん、だいたいです。</p>' +
     '<section class="diagnosis-cta" aria-labelledby="diagnosis-cta-title">' +
       '<div class="diagnosis-cta-copy"><p class="diagnosis-cta-label">TYPE CHECK / YOUR TURN</p>' +
         '<h2 id="diagnosis-cta-title">あなたなら、どの図書館員タイプ？</h2></div>' +

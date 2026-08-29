@@ -39,12 +39,6 @@
   <body>
     <main id="app" class="site-shell">
       <section class="title-card" aria-labelledby="game-title">
-        <div class="brand-row">
-          <a class="brand" href="https://yawatosho.hateblo.jp/gamecenter" target="_blank" rel="noopener noreferrer" aria-label="YAWATOSHO GAMESを別タブで開く">YAWATOSHO GAMES <span aria-hidden="true">↗</span></a>
-          <span class="edition">LIBRARIAN TYPE</span>
-          <span class="creator-credit">作成：やわらか図書館学</span>
-        </div>
-        <div class="screen-index"><span>GAME MENU / 00</span><strong>タイプ診断</strong></div>
         <div class="title-core">
           <img class="title-logo" src="./assets/logo.webp" alt="" width="1448" height="1086" decoding="async" fetchpriority="high" aria-hidden="true">
           <p class="eyebrow">図書館員の仕事のクセを、勝手に命名。</p>
@@ -52,7 +46,19 @@
           <p class="lead">12の質問から、あなたの図書館員タイプを<br class="desktop-break">勝手に分類します。</p>
           <button id="start-button" class="start-button" type="button">やってみる <span aria-hidden="true">→</span></button>
         </div>
-        <p class="duration">全12問・2〜3分くらい</p>
+        <footer class="title-footer" aria-label="サイト情報">
+          <a class="brand" href="https://yawatosho.hateblo.jp/gamecenter" target="_blank" rel="noopener noreferrer" aria-label="YAWATOSHO GAMESを別タブで開く">YAWATOSHO GAMES <span aria-hidden="true">↗</span></a>
+          <span class="footer-meta"><span class="creator-credit">作成：やわらか図書館学</span><button id="privacy-open" class="privacy-open" type="button" aria-haspopup="dialog" aria-controls="privacy-dialog">プライバシー</button></span>
+        </footer>
+        <dialog id="privacy-dialog" class="privacy-dialog" aria-labelledby="privacy-title">
+          <div class="privacy-panel">
+            <p class="privacy-label">PRIVACY / DATA</p>
+            <h2 id="privacy-title">アクセス解析・診断結果の集計について</h2>
+            <p>本サイトでは、利用状況の把握とサービス改善のためGoogle Analytics 4を利用しています。Google AnalyticsではCookie等を使用して、アクセス状況、利用環境等の情報が収集されます。</p>
+            <p>また、「あなたはどの図書館員タイプ？」では、診断結果の傾向を集計するため、診断完了時に最終的な診断タイプのみを記録しています。各質問への回答内容や、氏名・メールアドレス等の個人情報は記録していません。</p>
+            <button id="privacy-close" class="privacy-close" type="button">閉じる <span aria-hidden="true">×</span></button>
+          </div>
+        </dialog>
       </section>
     </main>
   </body>
