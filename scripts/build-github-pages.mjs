@@ -30,16 +30,16 @@ function resultBody(result) {
       '<figure class="result-illustration"><img src="' + escapeHtml(displayImage) + '" alt="' + escapeHtml(result.name) + 'のタイプ画像" decoding="async" fetchpriority="high"></figure>' +
       '<p class="catch-copy">' + escapeHtml(result.catchCopy) + '</p>' +
       '<p class="result-description">' + escapeHtml(result.description) + '</p></section>' +
-    '<section class="diagnosis-cta" aria-labelledby="diagnosis-cta-title">' +
-      '<div class="diagnosis-cta-copy"><p class="diagnosis-cta-label">TYPE CHECK / YOUR TURN</p>' +
-        '<h2 id="diagnosis-cta-title">あなたなら、どの図書館員タイプ？</h2>' +
-        '<p class="diagnosis-cta-description">12の二択質問で、16タイプのどれかに勝手に分類します。</p></div>' +
-      '<a class="diagnosis-cta-button" href="../../">診断してみる <span aria-hidden="true">→</span></a>' +
-    '</section>' +
     '<section class="likes-section" aria-labelledby="likes-title"><h2 id="likes-title">こんなこと、ちょっと好きかも</h2><ul>' + likes + '</ul></section>' +
       '<p class="disclaimer">※もちろん、だいたいです。</p>' +
+    '<section class="diagnosis-cta" aria-labelledby="diagnosis-cta-title">' +
+      '<div class="diagnosis-cta-copy"><p class="diagnosis-cta-label">TYPE CHECK / YOUR TURN</p>' +
+        '<h2 id="diagnosis-cta-title">あなたなら、どの図書館員タイプ？</h2></div>' +
+      '<a class="diagnosis-cta-button" href="../../">診断してみる <span aria-hidden="true">→</span></a>' +
+    '</section>' +
     '<section class="share-section" aria-labelledby="share-title"><h2 id="share-title">このタイプ、だれかに教える？</h2>' +
-      '<div class="share-buttons"><a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
+      '<div class="share-buttons"><button id="share-button" type="button" class="share-main">結果をシェア <span aria-hidden="true">↗</span></button>' +
+      '<a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
       '<button id="copy-button" type="button" class="copy-button" aria-live="polite">URLをコピー</button></div></section>' +
     '<a class="replay-button" href="../../"><span aria-hidden="true">←</span> もう一度診断する</a>' +
     '<section class="games-section" aria-labelledby="games-title"><p class="games-eyebrow">YAWATOSHO GAMES / PICK 01</p>' +
