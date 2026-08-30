@@ -45,6 +45,16 @@ function resultBody(result, rootPrefix, variant) {
       '</figure>' +
       '<p class="catch-copy">' + escapeHtml(result.catchCopy) + '</p>' +
       '<p class="result-description">' + escapeHtml(result.description) + '</p></section>' +
+    '<section id="result-stats" class="result-stats" aria-labelledby="result-stats-title" hidden>' +
+      '<p class="result-stats-label">LIVE STATS / みんなの診断結果</p>' +
+      '<h2 id="result-stats-title">このタイプだった人</h2>' +
+      '<div class="result-stats-main"><strong id="result-stats-percentage"><span id="result-stats-percentage-value"></span><small>%</small></strong></div>' +
+      '<div class="result-stats-details">' +
+        '<p class="result-stats-count"><span>診断結果</span><strong id="result-stats-count"></strong></p>' +
+        '<p class="result-stats-rank"><span>順位</span><strong id="result-stats-rank"></strong></p>' +
+      '</div>' +
+      '<p class="result-stats-note">これまでに集まった診断結果を集計しています。</p>' +
+    '</section>' +
     '<section class="likes-section" aria-labelledby="likes-title"><h2 id="likes-title">こんなこと、ちょっと好きかも</h2><ul>' + likes + '</ul></section>' +
     '<section class="diagnosis-cta" aria-labelledby="diagnosis-cta-title">' +
       '<div class="diagnosis-cta-copy"><p class="diagnosis-cta-label">TYPE CHECK / YOUR TURN</p>' +
@@ -107,7 +117,7 @@ function writeResultPage(result, variant) {
     .replaceAll("%%OG_IMAGE%%", escapeHtml(siteUrl + ogImage))
     .replaceAll("%%ROOT_PREFIX%%", rootPrefix)
     .replace("%%RESULT_BODY%%", '<div data-page="result"></div>' + resultBody(result, rootPrefix, variant))
-    .replace("<body>", '<body data-result-name="' + escapeHtml(result.name) + '" data-catch-copy="' + escapeHtml(result.catchCopy) + '" data-result-variant="' + variant + '">');
+    .replace("<body>", '<body data-result-slug="' + escapeHtml(result.slug) + '" data-result-name="' + escapeHtml(result.name) + '" data-catch-copy="' + escapeHtml(result.catchCopy) + '" data-result-variant="' + variant + '">');
   mkdirSync(resultDir, { recursive: true });
   writeFileSync(resolve(resultDir, "index.html"), html);
 }

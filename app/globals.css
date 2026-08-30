@@ -158,6 +158,21 @@ h1 { margin:0; }
 .result-illustration img { position:absolute; inset:0; width:100%; height:100%; display:block; object-fit:contain; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
 .result-image-librarian { transform:rotateY(180deg); }
 .result-illustration:focus-visible { outline:3px solid var(--hud-focus); outline-offset:5px; }
+.result-stats[hidden] { display:none; }
+.result-stats { position:relative; width:min(100%,1050px); display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); grid-template-areas:"label label" "title main" "details main" "note note"; align-items:end; column-gap:clamp(36px,7vw,92px); margin:0 auto; padding:clamp(72px,9vw,112px) clamp(0px,4vw,54px) clamp(66px,8vw,94px); border-bottom:1px solid var(--hud-border); }
+.result-stats::before { content:"LIVE / 16 TYPES"; position:absolute; top:42px; right:0; color:var(--hud-teal); font:800 .52rem/1 var(--font-ui); letter-spacing:.2em; }
+.result-stats::after { content:""; position:absolute; right:0; bottom:-1px; width:84px; border-bottom:3px solid var(--hud-hot); }
+.result-stats-label { grid-area:label; margin:0 0 25px; color:var(--hud-accent); font:850 .58rem/1 var(--font-ui); letter-spacing:.2em; }
+.result-stats h2 { grid-area:title; align-self:start; margin:0 0 36px; font-size:clamp(1.5rem,3vw,2.6rem); font-weight:800; line-height:1.3; }
+.result-stats-main { grid-area:main; align-self:center; min-width:0; padding:10px 0 18px clamp(28px,4vw,58px); border-left:2px solid var(--hud-text); }
+.result-stats-main strong { display:flex; align-items:flex-end; color:#9b5f52; font:900 clamp(4.7rem,10vw,8.2rem)/.86 var(--font-ui); letter-spacing:-.075em; white-space:nowrap; }
+.result-stats-main small { margin:0 0 .08em .22em; color:var(--hud-hot); font:850 .44em/.9 var(--font-ui); letter-spacing:-.03em; }
+.result-stats-details { grid-area:details; display:grid; grid-template-columns:1fr 1fr; border-block:1px solid var(--hud-border); }
+.result-stats-details p { min-width:0; margin:0; padding:17px 20px 18px 0; }
+.result-stats-details p + p { padding-left:20px; border-left:1px solid var(--hud-border); }
+.result-stats-details span { display:block; margin-bottom:9px; color:var(--hud-muted); font:800 .52rem/1 var(--font-ui); letter-spacing:.16em; }
+.result-stats-details strong { display:block; color:var(--hud-text); font-size:clamp(1rem,2vw,1.35rem); font-weight:850; line-height:1.25; }
+.result-stats-note { grid-area:note; margin:25px 0 0; color:var(--hud-muted); font-size:.76rem; font-weight:600; line-height:1.7; }
 .diagnosis-cta { position:relative; width:min(100%,1050px); display:grid; grid-template-columns:minmax(0,1fr) minmax(240px,300px); align-items:center; gap:clamp(28px,5vw,64px); margin:0 auto 64px; padding:clamp(34px,5vw,50px) clamp(24px,5vw,56px); overflow:hidden; background:linear-gradient(108deg,rgba(240,173,34,.12),rgba(255,251,241,.78) 48%,rgba(118,170,47,.13)); border-block:2px solid var(--hud-text); clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px); }
 .diagnosis-cta::before { content:""; position:absolute; left:0; top:0; width:7px; height:42%; background:var(--hud-hot); }
 .diagnosis-cta::after { content:""; position:absolute; right:0; bottom:0; width:52px; height:7px; background:var(--hud-teal); }
@@ -284,6 +299,15 @@ h1 { margin:0; }
   .result-illustration { width:100%; margin:0 auto 30px; }
   .catch-copy { margin:0 0 15px; padding-left:14px; }
   .result-description { font-size:.88rem; line-height:1.9; }
+  .result-stats { grid-template-columns:1fr; grid-template-areas:"label" "title" "main" "details" "note"; padding:72px 0 60px; }
+  .result-stats::before { top:39px; }
+  .result-stats-label { margin-bottom:19px; }
+  .result-stats h2 { margin-bottom:28px; }
+  .result-stats-main { margin-bottom:32px; padding:0 0 25px 18px; border-left:3px solid var(--hud-hot); border-bottom:1px solid var(--hud-border); }
+  .result-stats-main strong { font-size:clamp(4.5rem,24vw,6.8rem); }
+  .result-stats-details p { padding-right:12px; }
+  .result-stats-details p + p { padding-left:12px; }
+  .result-stats-details strong { font-size:clamp(.92rem,4.5vw,1.15rem); }
   .diagnosis-cta { grid-template-columns:1fr; gap:24px; margin-bottom:44px; padding:30px 22px 34px; }
   .diagnosis-cta h2 { font-size:clamp(1.3rem,7vw,1.8rem); }
   .diagnosis-cta-button { width:100%; }

@@ -83,4 +83,80 @@
     copyUrl();
   });
   copyButton.addEventListener("click", copyUrl);
+
+  function loadResultStats() {
+    var statsEndpoint = "https://script.google.com/macros/s/AKfycbzmlEHb4dOdx09HqzfwEkupO-1f3VuaSPxPHXBnKcSyjyIwpGCphybdzAkY6ruChPWj/exec";
+    var resultSlug = document.body.getAttribute("data-result-slug");
+    var statsSection = document.getElementById("result-stats");
+    var percentageElement = document.getElementById("result-stats-percentage");
+    var percentageValueElement = document.getElementById("result-stats-percentage-value");
+    var countElement = document.getElementById("result-stats-count");
+    var rankElement = document.getElementById("result-stats-rank");
+    if (!resultSlug || !statsSection || !percentageElement || !percentageValueElement || !countElement || !rankElement) return;
+
+    var script = document.createElement("script");
+    var settled = false;
+    var timeoutId;
+
+    function isFiniteNumber(value) {
+      return typeof value === "number" && isFinite(value);
+    }
+
+    function isWholeNumber(value) {
+      return isFiniteNumber(value) && value >= 0 && Math.floor(value) === value;
+    }
+
+    function formatInteger(value) {
+      return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function cleanup() {
+      window.clearTimeout(timeoutId);
+      script.onerror = null;
+      if (script.parentNode) script.parentNode.removeChild(script);
+      window.__LIBRARIAN_TYPE_STATS__ = function () {};
+    }
+
+    function failSilently() {
+      if (settled) return;
+      settled = true;
+      cleanup();
+    }
+
+    window.__LIBRARIAN_TYPE_STATS__ = function (data) {
+      if (settled) return;
+      settled = true;
+
+      try {
+        var total = data && data.total;
+        var types = data && data.types;
+        var stat = types && typeof types === "object" ? types[resultSlug] : null;
+        var count = stat && stat.count;
+        var percentage = stat && stat.percentage;
+        var rank = stat && stat.rank;
+        var isValid =
+          isWholeNumber(total) && total > 0 &&
+          isWholeNumber(count) && count <= total &&
+          isFiniteNumber(percentage) && percentage >= 0 && percentage <= 100 &&
+          isWholeNumber(rank) && rank >= 1 && rank <= 16;
+
+        if (isValid) {
+          percentageValueElement.textContent = percentage.toFixed(1);
+          countElement.textContent = formatInteger(count) + " / " + formatInteger(total) + "件";
+          rankElement.textContent = "16タイプ中 " + rank + "位";
+          statsSection.hidden = false;
+        }
+      } catch (error) {}
+
+      cleanup();
+    };
+
+    script.async = true;
+    script.onerror = failSilently;
+    script.src = statsEndpoint + "?v=" + Math.floor(Date.now() / 300000);
+    timeoutId = window.setTimeout(failSilently, 8000);
+    document.head.appendChild(script);
+  }
+
+  loadResultStats();
 }());
