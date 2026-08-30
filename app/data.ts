@@ -69,7 +69,7 @@ export const games = {
     href: "https://yawatosho.github.io/karuta_heroes/",
   },
   shelfRescue: {
-    title: "ひよっこ司書の本棚レスキュー",
+    title: "ひよっこ司書の本棚レスキューミッション",
     description: "本棚の誤配架を見つけたり、請求記号順に本を並べたりする書架レスキューゲーム。",
     href: "https://yawatosho.github.io/lily/",
   },
