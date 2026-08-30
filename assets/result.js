@@ -7,6 +7,12 @@
   var illustration = document.querySelector(".result-illustration");
   if (!shareButton || !copyButton || !xLink || !illustration) return;
 
+  Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
+    var href = link.getAttribute("href");
+    if (!href || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(href)) return;
+    link.href = new URL(href, window.location.href).href;
+  });
+
   var name = document.body.getAttribute("data-result-name");
   var catchCopy = document.body.getAttribute("data-catch-copy");
   var variant = document.body.getAttribute("data-result-variant") === "librarian" ? "librarian" : "default";
