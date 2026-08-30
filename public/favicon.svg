@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="4冊の本が並ぶ図書館員タイプ診断のアイコン">
   <rect width="512" height="512" fill="#f1e6cf"/>
-  <path d="M40 40H420L472 92V472H92L40 420Z" fill="#f1e6cf" stroke="#1d1b17" stroke-width="16"/>
   <path d="M56 56H126" stroke="#76aa2f" stroke-width="12"/>
   <path d="M386 456H456" stroke="#35aaa1" stroke-width="12"/>
   <rect x="88" y="226" width="68" height="142" fill="#ed5140"/>
