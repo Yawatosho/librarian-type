@@ -84,6 +84,80 @@
   });
   copyButton.addEventListener("click", copyUrl);
 
+  var JSONP_AUTHUSER_FALLBACKS = [null, "0", "1", "2", "3"];
+
+  function withAuthuserFallback(url, authuser) {
+    if (authuser === null || /[?&]authuser=/.test(url)) return url;
+    var separator = url.indexOf("?") !== -1 ? "&" : "?";
+    return url + separator + "authuser=" + encodeURIComponent(authuser);
+  }
+
+  function fetchJSONPAttempt(url, timeout) {
+    return new Promise(function (resolve, reject) {
+      var callbackName = "__librarianTypeStats_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+      var separator = url.indexOf("?") !== -1 ? "&" : "?";
+      var script = document.createElement("script");
+      var timer = null;
+      var settled = false;
+
+      function cleanup() {
+        if (timer) window.clearTimeout(timer);
+        script.onerror = null;
+        if (script.parentNode) script.parentNode.removeChild(script);
+        window[callbackName] = function () {};
+        window.setTimeout(function () {
+          try { delete window[callbackName]; } catch (error) {}
+        }, 30000);
+      }
+
+      window[callbackName] = function (data) {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve(data);
+      };
+
+      script.onerror = function () {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        reject(new Error("JSONP request failed: " + script.src));
+      };
+
+      timer = window.setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        reject(new Error("JSONP request timed out: " + script.src));
+      }, timeout);
+
+      script.src = url + separator + "callback=" + encodeURIComponent(callbackName);
+      script.async = true;
+      document.head.appendChild(script);
+    });
+  }
+
+  function fetchJSONP(url, timeout) {
+    timeout = timeout || 5000;
+    var index = 0;
+    var errors = [];
+
+    function attemptNext() {
+      if (index >= JSONP_AUTHUSER_FALLBACKS.length) {
+        return Promise.reject(new Error(errors.join(" / ")));
+      }
+
+      var authuser = JSONP_AUTHUSER_FALLBACKS[index++];
+      var attemptUrl = withAuthuserFallback(url, authuser);
+      return fetchJSONPAttempt(attemptUrl, timeout).catch(function (error) {
+        errors.push(error.message);
+        return attemptNext();
+      });
+    }
+
+    return attemptNext();
+  }
+
   function loadResultStats() {
     var statsEndpoint = "https://script.google.com/macros/s/AKfycbzmlEHb4dOdx09HqzfwEkupO-1f3VuaSPxPHXBnKcSyjyIwpGCphybdzAkY6ruChPWj/exec";
     var resultSlug = document.body.getAttribute("data-result-slug");
@@ -93,10 +167,7 @@
     var countElement = document.getElementById("result-stats-count");
     var rankElement = document.getElementById("result-stats-rank");
     if (!resultSlug || !statsSection || !percentageElement || !percentageValueElement || !countElement || !rankElement) return;
-
-    var script = document.createElement("script");
-    var settled = false;
-    var timeoutId;
+    if (typeof window.Promise !== "function") return;
 
     function isFiniteNumber(value) {
       return typeof value === "number" && isFinite(value);
@@ -110,23 +181,8 @@
       return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    function cleanup() {
-      window.clearTimeout(timeoutId);
-      script.onerror = null;
-      if (script.parentNode) script.parentNode.removeChild(script);
-      window.__LIBRARIAN_TYPE_STATS__ = function () {};
-    }
-
-    function failSilently() {
-      if (settled) return;
-      settled = true;
-      cleanup();
-    }
-
-    window.__LIBRARIAN_TYPE_STATS__ = function (data) {
-      if (settled) return;
-      settled = true;
-
+    var statsUrl = statsEndpoint + "?v=" + Math.floor(Date.now() / 300000);
+    fetchJSONP(statsUrl, 5000).then(function (data) {
       try {
         var total = data && data.total;
         var types = data && data.types;
@@ -147,15 +203,7 @@
           statsSection.hidden = false;
         }
       } catch (error) {}
-
-      cleanup();
-    };
-
-    script.async = true;
-    script.onerror = failSilently;
-    script.src = statsEndpoint + "?v=" + Math.floor(Date.now() / 300000);
-    timeoutId = window.setTimeout(failSilently, 8000);
-    document.head.appendChild(script);
+    }).catch(function () {});
   }
 
   loadResultStats();
