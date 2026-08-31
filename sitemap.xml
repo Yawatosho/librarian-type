@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://yawatosho.github.io/librarian-type/</loc></url>
+  <url><loc>https://yawatosho.github.io/librarian-type/types/</loc></url>
   <url><loc>https://yawatosho.github.io/librarian-type/result/reference-runner/</loc></url>
   <url><loc>https://yawatosho.github.io/librarian-type/result/counter-detective/</loc></url>
   <url><loc>https://yawatosho.github.io/librarian-type/result/reference-deep-dive/</loc></url>

@@ -6,7 +6,8 @@ import { games, questions, results } from "../app/data.ts";
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const outputDir = projectRoot;
 const siteUrl = (process.env.SITE_URL || "https://example.com").replace(/\/$/, "");
-const template = readFileSync(resolve(projectRoot, "static/result-template.html"), "utf8");
+const resultTemplate = readFileSync(resolve(projectRoot, "static/result-template.html"), "utf8");
+const typesTemplate = readFileSync(resolve(projectRoot, "static/types-template.html"), "utf8");
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, function (character) {
@@ -17,6 +18,26 @@ function escapeHtml(value) {
 function librarianImage(result) {
   const filename = result.slug === "shelving-tuner" ? "shelving-tuner.webp" : result.slug + "_lib.webp";
   return "/assets/result-ogp/librarian/" + filename;
+}
+
+function typeCard(result, index) {
+  const cardNumber = String(index + 1).padStart(2, "0");
+  const defaultImage = "../" + result.ogImage.replace(/^\/+/, "");
+  const alternateImage = "../" + librarianImage(result).replace(/^\/+/, "");
+  return '<a class="type-card" href="../result/' + escapeHtml(result.slug) + '/" style="--type-card-index:' + index + '" aria-labelledby="type-card-title-' + escapeHtml(result.slug) + '">' +
+    '<span class="type-card-visual" aria-hidden="true">' +
+      '<span class="type-card-flipper">' +
+        '<span class="type-card-face type-card-original"><img src="' + escapeHtml(defaultImage) + '" alt="" loading="lazy" decoding="async"></span>' +
+        '<span class="type-card-face type-card-librarian"><img src="' + escapeHtml(alternateImage) + '" alt="" loading="lazy" decoding="async"></span>' +
+      '</span>' +
+    '</span>' +
+    '<span class="type-card-copy">' +
+      '<span class="type-card-number">TYPE / ' + cardNumber + '</span>' +
+      '<span id="type-card-title-' + escapeHtml(result.slug) + '" class="type-card-title">' + escapeHtml(result.name) + '</span>' +
+      '<span class="type-card-catch">' + escapeHtml(result.catchCopy) + '</span>' +
+      '<span class="type-card-view">VIEW TYPE <span aria-hidden="true">→</span></span>' +
+    '</span>' +
+  '</a>';
 }
 
 function resultBody(result, rootPrefix, variant) {
@@ -65,7 +86,10 @@ function resultBody(result, rootPrefix, variant) {
       '<div class="share-buttons"><button id="share-button" type="button" class="share-main">結果をシェア <span aria-hidden="true">↗</span></button>' +
       '<a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
       '<button id="copy-button" type="button" class="copy-button" aria-live="polite">URLをコピー</button></div></section>' +
-    '<a class="replay-button" href="' + rootPrefix + '"><span aria-hidden="true">←</span> もう一度診断する</a>' +
+    '<nav class="result-return-links" aria-label="結果ページの移動">' +
+      '<a class="replay-button" href="' + rootPrefix + '"><span aria-hidden="true">←</span> もう一度診断する</a>' +
+      '<a class="result-archive-link" href="' + rootPrefix + 'types/">16タイプを見てみる <span aria-hidden="true">→</span></a>' +
+    '</nav>' +
     '<section class="games-section" aria-labelledby="games-title"><p class="games-eyebrow">YAWATOSHO GAMES / PICK 01</p>' +
       '<h2 id="games-title">あなたにおすすめのYAWATOSHO GAME</h2>' +
       '<div class="game-feature"><div class="game-identity"><p class="game-number">GAME / 01</p>' +
@@ -77,7 +101,7 @@ function resultBody(result, rootPrefix, variant) {
     '</article></main>';
 }
 
-for (const generatedPath of ["assets", "result", "index.html", "favicon.svg", "favicon-32x32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "manifest.webmanifest", ".nojekyll", "robots.txt", "sitemap.xml"]) {
+for (const generatedPath of ["assets", "result", "types", "index.html", "favicon.svg", "favicon-32x32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "manifest.webmanifest", ".nojekyll", "robots.txt", "sitemap.xml"]) {
   rmSync(resolve(outputDir, generatedPath), { recursive: true, force: true });
 }
 mkdirSync(resolve(outputDir, "assets"), { recursive: true });
@@ -93,6 +117,7 @@ const css = readFileSync(resolve(projectRoot, "app/globals.css"), "utf8");
 writeFileSync(resolve(outputDir, "assets/styles.css"), css);
 cpSync(resolve(projectRoot, "static/quiz.js"), resolve(outputDir, "assets/quiz.js"));
 cpSync(resolve(projectRoot, "static/result.js"), resolve(outputDir, "assets/result.js"));
+cpSync(resolve(projectRoot, "static/types.js"), resolve(outputDir, "assets/types.js"));
 cpSync(resolve(projectRoot, "static/index.html"), resolve(outputDir, "index.html"));
 
 const resultSlugs = Object.fromEntries(results.map(function (result) { return [result.internalCode, result.slug]; }));
@@ -109,7 +134,7 @@ function writeResultPage(result, variant) {
   const shareTitle = "私は「" + result.name + "」でした。";
   const description = result.catchCopy + " あなたはどの図書館員タイプ？";
   const ogImage = isLibrarian ? librarianImage(result) : result.ogImage;
-  const html = template
+  const html = resultTemplate
     .replaceAll("%%TITLE%%", escapeHtml(shareTitle + " | 図書館員タイプ"))
     .replaceAll("%%SHARE_TITLE%%", escapeHtml(shareTitle))
     .replaceAll("%%META_DESCRIPTION%%", escapeHtml(description))
@@ -127,15 +152,23 @@ results.forEach(function (result) {
   writeResultPage(result, "librarian");
 });
 
+const typesUrl = siteUrl + "/types/";
+const typesHtml = typesTemplate
+  .replaceAll("%%TYPES_URL%%", escapeHtml(typesUrl))
+  .replaceAll("%%OG_IMAGE%%", escapeHtml(siteUrl + "/assets/ogp.png"))
+  .replace("%%TYPE_CARDS%%", results.map(typeCard).join(""));
+mkdirSync(resolve(outputDir, "types"), { recursive: true });
+writeFileSync(resolve(outputDir, "types/index.html"), typesHtml);
+
 writeFileSync(resolve(outputDir, ".nojekyll"), "");
 writeFileSync(resolve(outputDir, "robots.txt"), "User-agent: *\nAllow: /\n");
 writeFileSync(
   resolve(outputDir, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-  ["", ...results.map(function (result) { return "result/" + result.slug + "/"; })]
+  ["", "types/", ...results.map(function (result) { return "result/" + result.slug + "/"; })]
     .map(function (path) { return "  <url><loc>" + escapeHtml(siteUrl + "/" + path) + "</loc></url>"; }).join("\n") +
   "\n</urlset>\n"
 );
 
 console.log("GitHub Pages root: " + outputDir);
-console.log("Questions: " + questions.length + " / Result pages: " + (results.length * 2));
+console.log("Questions: " + questions.length + " / Result pages: " + (results.length * 2) + " / Type cards: " + results.length);
