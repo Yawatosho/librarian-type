@@ -86,8 +86,10 @@
         '<div class="progress-track" role="progressbar" aria-label="回答の進み具合" aria-valuemin="0" aria-valuemax="' + game.questions.length + '" aria-valuenow="' + (index + 1) + '">' +
           '<span style="--progress-start:' + progressStart + '%;--progress-end:' + progressEnd + '%"></span></div>' +
         '<div class="question-content">' +
-          '<span class="question-stamp" aria-hidden="true">' + number + '</span>' +
-          '<h1 id="question-heading" tabindex="-1">' + escapeHtml(question.prompt).replace(/\n/g, "<br>") + '</h1>' +
+          '<div class="question-copy">' +
+            '<span class="question-stamp" aria-hidden="true">' + number + '</span>' +
+            '<h1 id="question-heading" tabindex="-1">' + escapeHtml(question.prompt).replace(/\n/g, "<br>") + '</h1>' +
+          '</div>' +
           '<div class="answers" aria-label="回答を選んでください">' +
             answerOrder.map(function (answer, answerIndex) {
               return '<button type="button" class="answer-button" data-index="' + answerIndex + '" aria-keyshortcuts="' + (answerIndex === 0 ? "A 1" : "B 2") + '">' +
@@ -121,8 +123,8 @@
     });
 
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var confirmDuration = reduceMotion ? 10 : 120;
-    var exitDuration = reduceMotion ? 10 : 90;
+    var confirmDuration = reduceMotion ? 10 : 170;
+    var exitDuration = reduceMotion ? 10 : 100;
     window.setTimeout(function () {
       var currentCard = app.querySelector(".question-card");
       if (currentCard) currentCard.classList.add("is-leaving");
