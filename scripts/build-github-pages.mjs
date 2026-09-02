@@ -40,7 +40,7 @@ function typeCard(result, index) {
   '</a>';
 }
 
-function resultBody(result, rootPrefix, variant) {
+function resultBody(result, rootPrefix, variant, resultUrl) {
   const game = games[result.recommendedGame.gameId];
   const defaultImage = rootPrefix + result.ogImage.replace(/^\/+/, "");
   const alternateImage = rootPrefix + librarianImage(result).replace(/^\/+/, "");
@@ -85,6 +85,7 @@ function resultBody(result, rootPrefix, variant) {
     '<section class="share-section" aria-labelledby="share-title"><h2 id="share-title">このタイプ、だれかに教える？</h2>' +
       '<div class="share-buttons"><button id="share-button" type="button" class="share-main">結果をシェア <span aria-hidden="true">↗</span></button>' +
       '<a id="x-share" href="https://x.com/" target="_blank" rel="noreferrer" class="share-x">Xで共有</a>' +
+      '<a id="facebook-share" href="https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(resultUrl) + '" target="_blank" rel="noopener noreferrer" class="share-facebook">Facebookで共有</a>' +
       '<button id="copy-button" type="button" class="copy-button" aria-live="polite">URLをコピー</button></div></section>' +
     '<nav class="result-return-links" aria-label="結果ページの移動">' +
       '<a class="replay-button" href="' + rootPrefix + '"><span aria-hidden="true">←</span> もう一度診断する</a>' +
@@ -141,7 +142,7 @@ function writeResultPage(result, variant) {
     .replaceAll("%%RESULT_URL%%", escapeHtml(resultUrl))
     .replaceAll("%%OG_IMAGE%%", escapeHtml(siteUrl + ogImage))
     .replaceAll("%%ROOT_PREFIX%%", rootPrefix)
-    .replace("%%RESULT_BODY%%", '<div data-page="result"></div>' + resultBody(result, rootPrefix, variant))
+    .replace("%%RESULT_BODY%%", '<div data-page="result"></div>' + resultBody(result, rootPrefix, variant, resultUrl))
     .replace("<body>", '<body data-result-slug="' + escapeHtml(result.slug) + '" data-result-name="' + escapeHtml(result.name) + '" data-catch-copy="' + escapeHtml(result.catchCopy) + '" data-result-variant="' + variant + '">');
   mkdirSync(resultDir, { recursive: true });
   writeFileSync(resolve(resultDir, "index.html"), html);

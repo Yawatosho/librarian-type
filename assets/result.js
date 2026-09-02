@@ -4,8 +4,9 @@
   var shareButton = document.getElementById("share-button");
   var copyButton = document.getElementById("copy-button");
   var xLink = document.getElementById("x-share");
+  var facebookLink = document.getElementById("facebook-share");
   var illustration = document.querySelector(".result-illustration");
-  if (!shareButton || !copyButton || !xLink || !illustration) return;
+  if (!shareButton || !copyButton || !xLink || !facebookLink || !illustration) return;
 
   Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
     var href = link.getAttribute("href");
@@ -28,8 +29,10 @@
     return variant === "librarian" ? librarianUrl : defaultUrl;
   }
 
-  function updateShareLink() {
-    xLink.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(currentShareUrl());
+  function updateShareLinks() {
+    var shareUrl = currentShareUrl();
+    xLink.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
+    facebookLink.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl);
   }
 
   function updateVariant(nextVariant) {
@@ -47,14 +50,14 @@
     document.querySelector('meta[property="og:image"]').content = nextImage;
     document.querySelector('meta[name="twitter:image"]').content = nextImage;
     window.history.replaceState(null, "", nextUrl);
-    updateShareLink();
+    updateShareLinks();
   }
 
   function toggleIllustration() {
     updateVariant(variant === "librarian" ? "default" : "librarian");
   }
 
-  updateShareLink();
+  updateShareLinks();
   illustration.addEventListener("click", toggleIllustration);
   illustration.addEventListener("keydown", function (event) {
     if (event.key !== "Enter" && event.key !== " ") return;

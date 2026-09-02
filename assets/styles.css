@@ -201,7 +201,7 @@ h1 { margin:0; }
 .share-section { position:relative; width:min(100%,1120px); margin:0 auto; padding:clamp(50px,7vw,82px) clamp(20px,6vw,84px); background:linear-gradient(115deg,rgba(118,170,47,.15),rgba(255,251,241,.8) 46%,rgba(237,81,64,.1)); border-block:2px solid var(--hud-border); clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px); }
 .share-section::before { content:"SHARE YOUR TYPE"; position:absolute; top:17px; left:24px; color:var(--hud-accent); font:800 .52rem/1 var(--font-ui); letter-spacing:.18em; }
 .share-section h2 { margin:0 0 28px; font-size:clamp(1.25rem,3vw,2.1rem); }
-.share-buttons { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.share-buttons { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .share-buttons button,.share-buttons a { position:relative; min-height:56px; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:12px 16px; color:var(--hud-text); background:rgba(255,251,241,.66); border:1px solid var(--hud-line); border-radius:0; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%); font-size:.82rem; font-weight:800; letter-spacing:.05em; text-decoration:none; cursor:pointer; transition:color var(--hud-duration-fast) ease-out,border-color var(--hud-duration-fast) ease-out,transform var(--hud-duration-fast) ease-out; }
 .share-buttons button::before,.share-buttons a::before { content:""; position:absolute; inset:0; z-index:-1; background:var(--hud-accent); transform:translateX(-102%); transition:transform var(--hud-duration-fast) ease-out; }
 .share-buttons button:hover,.share-buttons a:hover { color:var(--hud-on-accent); border-color:var(--hud-accent); transform:translateY(-1px); }
@@ -400,7 +400,6 @@ h1 { margin:0; }
   .likes-section li { grid-template-columns:52px 1fr; gap:13px; min-height:75px; padding-right:6px; font-size:.86rem; }
   .likes-section li span { font-size:1.05rem; }
   .share-section { padding:54px 14px 30px; }
-  .share-buttons { grid-template-columns:1fr 1fr; }
   .result-return-links { margin-bottom:58px; }
   .games-section { padding:50px 0 28px; }
   .games-section::before { width:46%; }
@@ -430,6 +429,8 @@ h1 { margin:0; }
   .types-bottom-cta > a { width:100%; }
 }
 @media (max-width:580px) {
+  .share-buttons { grid-template-columns:1fr 1fr; }
+  .share-buttons .copy-button { grid-column:1/-1; }
   .types-grid { grid-template-columns:1fr; gap:34px; }
   .type-card-copy { min-height:200px; }
   .archive-top-link { width:100%; }
